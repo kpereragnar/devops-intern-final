@@ -122,7 +122,7 @@ jobs:
   # Job 3: Publish image to GHCR
   publish:
     name: Publish to GitHub Container Registry
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     needs:
       - lint
@@ -136,7 +136,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
