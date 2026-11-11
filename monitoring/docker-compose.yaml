@@ -1,0 +1,47 @@
+
+services:
+  loki:
+    image: grafana/loki:3.7.9
+    container_name: loki
+    command:
+      - -config.file=/etc/loki/loki-config.yaml
+    ports:
+      - "127.0.0.1:3100:3100"
+    volumes:
+      - ./loki/loki-config.yaml:/etc/loki/loki-config.yaml:ro
+      - loki_data:/loki
+    restart: unless-stopped
+    mem_limit: 768m
+
+  promtail:
+    image: grafana/promtail:3.6.11
+    container_name: promtail
+    command:
+      - -config.file=/etc/promtail/promtail-config.yaml
+    volumes:
+      - ./promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - promtail_positions:/var/lib/promtail
+    depends_on:
+      - loki
+    restart: unless-stopped
+    mem_limit: 128m
+
+  grafana:
+    image: grafana/grafana:13.3.0
+    container_name: grafana
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - loki
+    restart: unless-stopped
+    mem_limit: 512m
+
+volumes:
+  loki_data:
+  promtail_positions:
+  grafana_data:
