@@ -160,6 +160,6 @@ docker compose -f monitoring/docker-compose.yaml down -v
 
 Grafana Explore screenshot:
 
-`docs/screenshots/09-grafana-explore.png`
+`docs/screenshots/06-grafana-explore.png`
 
 The screenshot demonstrates NGINX log ingestion and HTTP 404 filtering through Loki.
